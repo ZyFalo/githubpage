@@ -1,0 +1,82 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Clasificación - Fútbol Colombiano{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mt-5 mb-5">Tabla de Posiciones 2023</h1>
+        <p class="text-right mb-4">La información mostrada es proporcionada por <a href="https://api-sports.io/" target="_blank">API-SPORTS</a>.</p>
+        <div class="row">
+            <!-- Spinner de carga -->
+            <div id="loading-spinner" class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only"></span>
+                </div>
+            </div>
+            <!-- Tabla de posiciones -->
+            <div class="shadow-lg">
+                <div id="wg-api-football-standings"
+                    data-host="v3.football.api-sports.io"
+                    data-key="69fca6b2c5c769cd8850ef38861e5c85"
+                    data-league="239"
+                    data-team=""
+                    data-season="2023"
+                    data-theme="grey"
+                    data-show-errors="false"
+                    data-show-logos="true"
+                    class="wg_loader">
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        // Aplicar el tema guardado al cargar la página
+        (function() {
+            const savedTheme = localStorage.getItem("theme");
+            if (savedTheme === "dark") {
+                const body = document.getElementById("bodyElement");
+                body.classList.add("bg-dark-custom", "text-light-custom");
+                body.classList.remove("bg-light", "text-dark");
+
+                // Asegurarse de que la sección con la clase 'no-theme-change' no cambie de color
+                const noChangeElements = document.querySelectorAll('.no-theme-change');
+                noChangeElements.forEach(element => {
+                    element.classList.add('no-theme-change-dark');
+                });
+            }
+        })();
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const spinner = document.getElementById("loading-spinner");
+            const standings = document.getElementById("wg-api-football-standings");
+
+            // Mostrar el spinner al iniciar la solicitud
+            spinner.style.display = "block";
+            standings.style.display = "none";
+
+            fetch("https://v3.football.api-sports.io/leagues", {
+                "method": "GET",
+                "headers": {
+                    "x-rapidapi-host": "v3.football.api-sports.io",
+                    "x-rapidapi-key": "69fca6b2c5c769cd8850ef38861e5c85"
+                }
+            })
+            .then(response => {
+                console.log(response);
+                // Ocultar el spinner y mostrar la tabla cuando los datos se hayan cargado
+                spinner.style.display = "none";
+                standings.style.display = "block";
+            })
+            .catch(err => {
+                console.log(err);
+                // Ocultar el spinner incluso si hay un error
+                spinner.style.display = "none";
+                standings.style.display = "block";
+            });
+        });
+    </script>
+    <script type="module" src="https://widgets.api-sports.io/2.0.3/widgets.js"></script>
+{% endblock %}

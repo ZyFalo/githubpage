@@ -1,0 +1,37 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Noticias - Fútbol Colombiano{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1 class="text-center mt-5 mb-5">Noticias</h1>
+        </div>
+        <div class="row">
+            {% for noticia in noticias %}
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-hover bg-light custom-card hover-scale rounded-5 shadow-lg">
+                        <img src="{{ noticia.imageurl }}" class="card-img-top rounded-5" alt="{{ noticia.title }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mt-4 mb-4">{{ noticia.title }}</h5>
+                            <p class="card-text mt-3">{{ noticia.description }}</p>
+                            <p class="card-text"><small class="text-muted">Fecha: {{ noticia.date|date:"d M Y" }}</small></p>
+                            <a href="{% url 'detalle_noticia' noticia.id %}" class="btn btn-outline-warning w-50 d-block mx-auto text-center">Leer más</a>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No hay noticias disponibles.</p>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-12 text-center mt-4">
+                {% if last_updated %}
+                    <p>Última actualización: {{ last_updated|date:"d M Y" }}</p>
+                {% else %}
+                    <p>No hay actualizaciones disponibles.</p>
+                {% endif %}
+                <p class="text-muted mt-2">Informacion obtenida de <a href="https://www.futbolred.com" target="_blank">Futbolred</a>.</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

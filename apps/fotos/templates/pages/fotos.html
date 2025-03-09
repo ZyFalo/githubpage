@@ -1,0 +1,28 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Estadios - Fútbol Colombiano{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="text-center mt-5 mb-5">Estadios de Colombia</h1>
+        <div class="row">
+            {% for foto in fotos %}
+                <div class="col-12 col-sm-6 col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-hover bg-light custom-card hover-scale rounded-5 shadow-lg">
+                        <img src="{{ foto.imageurl }}" class="card-img-top rounded-5" alt="{{ foto.nombre }}">
+                        <div class="card-body text-center">
+                            <h5 class="card-title mt-3">{{ foto.nombre }}</h5> <!-- Añadir clase de margen superior aquí -->
+                            <div class="d-flex justify-content-between mt-4">
+                                <span class="text-muted"><strong>{{ foto.ciudad }}</strong></span>
+                                <span class="text-muted"><strong>Capacidad: {{ foto.capacidad }}</strong></span>
+                            </div>
+                            <small class="text-muted d-block mt-2">{{ foto.descripcion }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No hay fotos disponibles.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
